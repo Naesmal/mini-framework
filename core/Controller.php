@@ -33,14 +33,14 @@ class Controller {
         // Tampon de sortie pour capturer le contenu de la vue
         ob_start();
         include $viewPath;
-        $content = ob_get_clean();
+        $content = ob_get_clean();  // Cette ligne capture le contenu dans $content
         
         // Vérifier s'il y a un layout
         $layoutPath = __DIR__ . '/../views/layouts/main.php';
         if (file_exists($layoutPath)) {
             include $layoutPath;
         } else {
-            echo $content;
+            echo $content;  // Si pas de layout, afficher directement le contenu
         }
     }
     

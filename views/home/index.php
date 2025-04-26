@@ -1,49 +1,56 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Mini-Framework PHP' ?></title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Mini-Framework PHP</h1>
-            <nav>
-                <ul>
-                    <li><a href="/">Accueil</a></li>
-                    <li><a href="/users">Utilisateurs</a></li>
-                    <?php if (Security::isAuthenticated()): ?>
-                        <li><a href="/logout">Déconnexion</a></li>
-                    <?php else: ?>
-                        <li><a href="/login">Connexion</a></li>
-                        <li><a href="/register">Inscription</a></li>
-                    <?php endif; ?>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<h2><?= $title ?></h2>
+
+<div class="welcome-box">
+    <h3><?= $message ?></h3>
     
-    <main>
-        <div class="container">
-            <?php if (isset($_SESSION['flash_message'])): ?>
-                <div class="alert alert-<?= $_SESSION['flash_type'] ?? 'info' ?>">
-                    <?= $_SESSION['flash_message'] ?>
-                </div>
-                <?php unset($_SESSION['flash_message'], $_SESSION['flash_type']); ?>
+    <p>Votre mini-framework PHP est prêt à l'emploi. Ce framework léger et intuitif vous permettra de développer rapidement des applications web avec :</p>
+    
+    <ul>
+        <li>Opérations CRUD simplifiées</li>
+        <li>Connexion PDO à la base de données</li>
+        <li>Routage simple et intuitif</li>
+        <li>Sécurité de base intégrée</li>
+        <li>Structure MVC légère</li>
+    </ul>
+    
+    <div class="get-started">
+        <h4>Pour commencer</h4>
+        
+        <p>Voici quelques liens utiles pour vous aider à démarrer :</p>
+        
+        <div class="button-group">
+            <a href="/users" class="btn btn-primary">Gérer les utilisateurs</a>
+            <?php if (!Security::isAuthenticated()): ?>
+                <a href="/register" class="btn btn-secondary">Créer un compte</a>
             <?php endif; ?>
-            
-            <?= $content ?>
         </div>
-    </main>
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-box">
+        <h3>CRUD Simplifié</h3>
+        <p>Créez, lisez, mettez à jour et supprimez des données sans effort grâce aux méthodes prédéfinies dans les modèles.</p>
+        <pre><code>$users = (new User())->all();
+$user = (new User())->find(1);
+$userId = (new User())->create($data);
+$success = (new User())->update($id, $data);
+$success = (new User())->delete($id);</code></pre>
+    </div>
     
-    <footer>
-        <div class="container">
-            <p>&copy; <?= date('Y') ?> Mini-Framework PHP. Tous droits réservés.</p>
-        </div>
-    </footer>
+    <div class="feature-box">
+        <h3>Routage Intuitif</h3>
+        <p>Les routes sont définies simplement dans un fichier de configuration :</p>
+        <pre><code>'/users' => ['UserController', 'index'],
+'/users/{id}' => ['UserController', 'show']</code></pre>
+    </div>
     
-    <script src="/js/script.js"></script>
-</body>
-</html>
+    <div class="feature-box">
+        <h3>Sécurité Intégrée</h3>
+        <p>Protection CSRF, hachage des mots de passe et authentification :</p>
+        <pre><code>&lt;?= Security::generateCSRFToken() ?&gt;
+Security::checkCSRF();
+Security::hashPassword($password);
+Security::login($username, $password);</code></pre>
+    </div>
+</div>
