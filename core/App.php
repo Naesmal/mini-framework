@@ -19,6 +19,10 @@ class App {
      * Constructeur privé pour empêcher l'instanciation directe
      */
     private function __construct() {
+        // Charger l'autoloader
+        require_once __DIR__ . '/Autoloader.php';
+        Autoloader::register();
+        
         // Charger les fichiers du noyau
         $this->loadCore();
         

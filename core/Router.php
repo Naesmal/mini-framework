@@ -73,18 +73,17 @@ class Router {
         // Si aucune route n'a été trouvée
         $this->handleError("Page non trouvée", 404);
     }
-    
     /**
      * Convertit un pattern de route en expression régulière
      * @param string $pattern Pattern de la route (ex: /users/{id})
      * @return string
      */
     private function patternToRegex($pattern) {
-        // Échapper les caractères spéciaux
-        $pattern = preg_quote($pattern, '/');
+        // Remplacer les placeholders {param} par des groupes de capture avant d'échapper les caractères spéciaux
+        $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([^/]+)', $pattern);
         
-        // Remplacer les placeholders {param} par des groupes de capture
-        $pattern = preg_replace('/\\\{([a-zA-Z0-9_]+)\\\}/', '([^/]+)', $pattern);
+        // Échapper les caractères spéciaux après avoir remplacé les placeholders
+        $pattern = preg_quote($pattern, '/');
         
         // Ajouter les délimiteurs et ancres
         return '/^' . $pattern . '$/';
