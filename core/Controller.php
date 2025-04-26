@@ -77,12 +77,17 @@ class Controller {
      */
     protected function getPostData($fields = []) {
         if (empty($fields)) {
-            return filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            // Utiliser htmlspecialchars au lieu de FILTER_SANITIZE_STRING
+            $data = [];
+            foreach ($_POST as $key => $value) {
+                $data[$key] = $this->sanitizeInput($value);
+            }
+            return $data;
         }
         
         $data = [];
         foreach ($fields as $field) {
-            $data[$field] = filter_input(INPUT_POST, $field, FILTER_SANITIZE_STRING);
+            $data[$field] = isset($_POST[$field]) ? $this->sanitizeInput($_POST[$field]) : null;
         }
         
         return $data;
@@ -95,15 +100,37 @@ class Controller {
      */
     protected function getQueryData($fields = []) {
         if (empty($fields)) {
-            return filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+            // Utiliser htmlspecialchars au lieu de FILTER_SANITIZE_STRING
+            $data = [];
+            foreach ($_GET as $key => $value) {
+                $data[$key] = $this->sanitizeInput($value);
+            }
+            return $data;
         }
         
         $data = [];
         foreach ($fields as $field) {
-            $data[$field] = filter_input(INPUT_GET, $field, FILTER_SANITIZE_STRING);
+            $data[$field] = isset($_GET[$field]) ? $this->sanitizeInput($_GET[$field]) : null;
         }
         
         return $data;
+    }
+
+    /**
+     * Fonction auxiliaire pour nettoyer les entrées
+     * @param mixed $input Données à nettoyer
+     * @return mixed
+     */
+    private function sanitizeInput($input) {
+        if (is_array($input)) {
+            foreach ($input as $key => $value) {
+                $input[$key] = $this->sanitizeInput($value);
+            }
+            return $input;
+        }
+        
+        // Utiliser htmlspecialchars comme alternative à FILTER_SANITIZE_STRING
+        return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
     }
     
     /**
