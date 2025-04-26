@@ -24,7 +24,7 @@ Un framework PHP léger, intuitif et puissant pour développer rapidement des ap
 
 ```bash
 # Cloner le dépôt
-git clone https://github.com/Naesmal/miniphp-framework.git
+git clone https://github.com/Naesmal/mini-framework.git
 
 # Ou télécharger et extraire l'archive
 ```
